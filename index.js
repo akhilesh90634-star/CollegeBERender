@@ -12,23 +12,34 @@
 require("dotenv").config();
 
 const express = require("express");
-let cors = require("cors");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
 const connectdb = require("./config/db");
 
 const app = express();
 
-// middleware
-app.use(cors());
-app.use(express.json());
+// 🔹 CORS (IMPORTANT for refresh token cookies)
+app.use(
+  cors({
+    origin: "http://localhost:3000", // change if frontend URL is different
+    credentials: true, // 🔥 REQUIRED for cookies
+  })
+);
 
-// database
+// 🔹 Middleware
+app.use(express.json());
+app.use(cookieParser());
+
+// 🔹 Database connection
 connectdb();
 
-// routes
+// 🔹 Routes
 app.use("/students", require("./routes/studentRoutes"));
 app.use("/trainers", require("./routes/trainerRoutes"));
 app.use("/auth", require("./routes/authRoutes"));
 
+// 🔹 Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

@@ -30,6 +30,10 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: "student", // ✅ AUTO role
     },
+    refreshToken: {
+    type: String,
+    default: null,
+  },
   },
   {
     timestamps: true,
